@@ -1,0 +1,5 @@
+---
+- name: Firefox | Installing
+  homebrew_cask:
+    name: firefox
+    state: latest

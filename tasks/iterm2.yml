@@ -1,0 +1,5 @@
+---
+- name: iTerm2 | Installing
+  homebrew_cask:
+    name: iterm2
+    state: latest

@@ -1,0 +1,44 @@
+---
+- name: Z shell (zsh) | Installing
+  homebrew:
+    name: zsh
+    state: latest
+
+- name: Z shell (zsh) | Checking if oh my zsh is installed
+  stat: 
+    path: ~/.oh-my-zsh
+  register: oh-my-zsh_check
+  changed_when: false
+
+- name: Z shell (zsh) | Installing oh my zsh
+  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  when: not oh-my-zsh_check.stat.exists
+
+- name: Z shell (zsh) | Fix navigation per word (forward, backword)
+  lineinfile:
+    path: "/Users/{{ ansible_local_user }}/.zshrc"
+    line: "{{ item }}"
+  with_items:
+    - "bindkey '[C' forward-word"
+    - "bindkey '[D' backward-word"
+
+- name: Z shell (zsh) | Add some plugins
+  lineinfile:
+    path: "/Users/{{ ansible_local_user }}/.zshrc"
+    backrefs: yes
+    regexp: 'plugins=\((.*)\)'
+    line: '\1 "{{ zsh_plugins }}"'
+
+- name: Z shell (zsh) | Download pure prompt
+  git:
+    repo: https://github.com/sindresorhus/pure
+    dest: "/Users/{{ ansible_local_user }}/.oh-my-zsh/custom/pure"
+
+- name: Z shell (zsh) | Enable pure prompt
+  lineinfile:
+    path: "/Users/{{ ansible_local_user }}/.zshrc"
+    line: "{{ item }}"
+  with_items:
+    - 'fpath+=$HOME/.oh-my-zsh/custom/pure'
+    - 'autoload -U promptinit; promptinit'
+    - 'prompt pure'

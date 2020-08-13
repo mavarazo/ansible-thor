@@ -1,0 +1,36 @@
+---
+- name: Homebrew | Check if already installed
+  stat:
+    path: /usr/local/bin/brew
+  register: homebrew_check
+
+- name: Homebrew | Download Install Script
+  get_url:
+    url: https://raw.githubusercontent.com/Homebrew/install/master/install
+    dest: "{{ ansible_cache_dir }}/homebrew_install"
+  when: not homebrew_check.stat.exists
+
+- name: Homebrew | Install
+  shell: "/usr/bin/ruby {{ ansible_cache_dir }}/homebrew_install"
+  environment:
+    USER: "{{ ansible_local_user }}"
+    CI: "true"
+  when: not homebrew_check.stat.exists
+
+- name: Homebrew | Remove Install Script
+  file:
+    path: "{{ ansible_cache_dir }}/homebrew_install"
+    state: absent
+
+- name: Homebrew | Check for updates 
+  homebrew:
+    state: latest
+    update_homebrew: yes
+
+- name: Homebrew | Installing tap caskroom/cask
+  homebrew_tap:
+    tap: homebrew/cask
+
+- name: Homebrew | Installing tap caskroom/cask-versions
+  homebrew_tap:
+    tap: homebrew/cask-versions

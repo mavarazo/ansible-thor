@@ -3,3 +3,9 @@ ansible_python_interpreter: /usr/bin/python3
 ###
 ### Global
 ###
+
+
+###
+### Z shell (zsh)
+###
+zsh_plugins: brew colored-man-pages colorize git pip python osx

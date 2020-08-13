@@ -1,0 +1,9 @@
+---
+- name: Docker | Installing
+  homebrew_cask:
+    name: docker
+    state: latest
+
+- name: Docker | Execute
+  shell: open -a Docker
+  changed_when: false

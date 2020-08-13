@@ -1,0 +1,6 @@
+---
+- name: NextCloud | Installing
+  homebrew_cask:
+    name: nextcloud
+    state: latest
+    install_options: no-quaratine

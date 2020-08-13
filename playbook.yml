@@ -1,5 +1,28 @@
 ---
-    - hosts: all
-      become: true
-      vars_files:
-        - vars/default.yml
+- hosts: all
+  become: true
+  vars_files:
+    - vars/default.yml
+
+  pre_tasks:
+  - import_tasks: tasks/homebrew.yml
+    tags: homebrew
+
+  - import_tasks: tasks/git.yml
+    tags: git
+
+  tasks:
+  - import_tasks: tasks/iterm2.yml
+    tags: iterm2
+
+  - import_tasks: tasks/zsh.yml
+    tags: zsh
+
+  - import_tasks: tasks/docker.yml
+    tags: docker
+
+  - import_tasks: tasks/firefox.yml
+    tags: firefox
+
+  - import_tasks: tasks/nextcloud.yml
+    tags: nextcloud

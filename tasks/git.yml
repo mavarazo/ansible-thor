@@ -1,0 +1,5 @@
+---
+- name: Git | Installing
+  homebrew:
+    name: git
+    state: latest
